@@ -1,18 +1,12 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
-const cors = require('cors');
 
 /* app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 }); */
-
-var corsOptions = {
-  origins: ["https://neontoon.mn/","http://localhost:5000"],
-  optionsSuccessStatus: 200 // For legacy browser support
-}
   
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 app.get("/video/:type/:name/:size", function (req, res) {
   const {type, name, size} = req.params;
