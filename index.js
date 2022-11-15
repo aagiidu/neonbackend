@@ -1,22 +1,32 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
+const cors = require('cors');
 
-app.get("/", function (req, res) {
+/* app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
-});
+}); */
 
-app.get("/video", function (req, res) {
-  // Ensure there is a range given for the video kjk
+var corsOptions = {
+  origins: ["https://neontoon.mn/","http://localhost:5000"],
+  optionsSuccessStatus: 200 // For legacy browser support
+}
+  
+app.use(cors(corsOptions));
+
+app.get("/video/:type/:name/:size", function (req, res) {
+  const {type, name, size} = req.params;
+  const allowed = ['http://localhost/', 'https://neontoon.mn/', 'https://www.neontoon.mn/'];
+  if(!allowed.includes(req.headers.referer)) return res.status(403).send("Хандах эрхгүй!");
   const range = req.headers.range;
   if (!range) {
     res.status(400).send("Requires Range header");
   }
 
   // get video stats (about 61MB)
-  const videoPath = "bigbuck.mp4";
-  const videoSize = fs.statSync("bigbuck.mp4").size;
-
+  const videoPath = `../videos/${type}/${name}_${size}.mp4`;
+  const videoSize = fs.statSync(videoPath).size;
+  console.log('videoSize', videoSize);
   // Parse Range
   // Example: "bytes=32324-"
   const CHUNK_SIZE = 10 ** 6; // 1MB
