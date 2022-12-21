@@ -26,7 +26,7 @@ app.get("/video/:type/:name/:size", function (req, res) {
 
   let range = req.headers.range
   // console.log('Range 1', req.get('Range'))
-  //if (!range) range = 'bytes=0-'
+  if (!range) range = 'bytes=0-'
 
   console.log('Range', range)
   // get video stats (about 61MB)
