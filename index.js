@@ -34,7 +34,7 @@ app.get("/video/:type/:name/:size", function (req, res) {
   // PM2 suulgana!
   const videoPath = `../movies/${type}/${name}_${size}.mp4`;
   const videoSize = fs.statSync(videoPath).size;
-  // console.log('videoSize', videoSize);
+  console.log('videoSize', videoSize);
   // Parse Range
   // Example: "bytes=32324-"
   const CHUNK_SIZE = 10 ** 6; // 1MB
