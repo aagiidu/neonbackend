@@ -29,15 +29,12 @@ app.get("/video/:type/:name/:size", function (req, res) {
   if (!range) range = 'bytes=0-'
 
   console.log('Range', range)
-  // get video stats (about 61MB)
-  // Zamaa zasna!
-  // PM2 suulgana!
   const videoPath = `../movies/${type}/${name}_${size}.mp4`;
   const videoSize = fs.statSync(videoPath).size;
   console.log('videoSize', videoSize);
   // Parse Range
   // Example: "bytes=32324-"
-  const CHUNK_SIZE = 15 ** 6; // 1MB
+  const CHUNK_SIZE = 10 ** 6; // 1MB
   const start = Number(range.replace(/\D/g, ""));
   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
 
@@ -55,20 +52,6 @@ app.get("/video/:type/:name/:size", function (req, res) {
   const videoStream = fs.createReadStream(videoPath, { start, end });
   videoStream.pipe(res);
 });
-
-async function querySql(sql) {
-  connection.connect();
-  let result = []
-  connection.query(sql, function (error, results) {
-    if (error) {
-      console.log('onError58', error)  
-    } 
-    console.log('results', results)
-    result = results[0]
-  })
-  connection.end();
-  return result;
-}
 
 app.post("/message", async function (req, res) {
   const { msg, token } = req.body
