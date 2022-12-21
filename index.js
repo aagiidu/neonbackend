@@ -23,7 +23,7 @@ app.get("/video/:type/:name/:size", function (req, res) {
   const {type, name, size} = req.params;
   // const allowed = ['http://localhost/', 'https://neontoon.mn/', 'https://www.neontoon.mn/'];
   // if(!allowed.includes(req.headers.referer)) return res.status(403).send("Хандах эрхгүй!");
-  const range = req.headers.range;
+  let range = req.headers.range;
   //console.log('HEaders', req.headers)
   if (!range) range = 'bytes=0-'
 
