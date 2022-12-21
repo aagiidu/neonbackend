@@ -2,9 +2,9 @@ const express = require("express");
 // const app = express();
 const fs = require("fs");
 const cors = require('cors')
-/* app.get("/", function (req, res) {
+app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
-}); */  
+});  
 var mysql = require('mysql')
 
 var connection = mysql.createConnection({
