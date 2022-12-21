@@ -24,11 +24,11 @@ app.get("/video/:type/:name/:size", function (req, res) {
   // const allowed = ['http://localhost/', 'https://neontoon.mn/', 'https://www.neontoon.mn/'];
   // if(!allowed.includes(req.headers.referer)) return res.status(403).send("Хандах эрхгүй!");
 
-  let range = req.range()
-  console.log('Range 1', req.range())
+  let range = req.get('Range')
+  // console.log('Range 1', req.get('Range'))
   //if (!range) range = 'bytes=0-'
 
-  console.log('Range 2', range)
+  console.log('Range', range)
   // get video stats (about 61MB)
   // Zamaa zasna!
   // PM2 suulgana!
