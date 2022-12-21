@@ -2,9 +2,7 @@ const express = require("express");
 // const app = express();
 const fs = require("fs");
 const cors = require('cors')
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/index.html");
-});  
+
 var mysql = require('mysql')
 
 var connection = mysql.createConnection({
@@ -18,6 +16,10 @@ var connection = mysql.createConnection({
 const body_parser = require('body-parser');
 const app = express().use(body_parser.json());
 app.use(cors());
+
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/index.html");
+});  
 
 app.get("/video/:type/:name/:size", function (req, res) {
   const {type, name, size} = req.params;
