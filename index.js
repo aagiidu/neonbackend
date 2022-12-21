@@ -1,17 +1,28 @@
 const express = require("express");
-const app = express();
+// const app = express();
 const fs = require("fs");
-
+const cors = require('cors')
 /* app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
-}); */
-  
-// app.use(cors(corsOptions));
+}); */  
+var mysql = require('mysql')
+
+var connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "vflix",
+  multipleStatements: true
+});
+
+const body_parser = require('body-parser');
+const app = express().use(body_parser.json());
+app.use(cors());
 
 app.get("/video/:type/:name/:size", function (req, res) {
   const {type, name, size} = req.params;
-  const allowed = ['http://localhost/', 'https://neontoon.mn/', 'https://www.neontoon.mn/'];
-  if(!allowed.includes(req.headers.referer)) return res.status(403).send("Хандах эрхгүй!");
+  // const allowed = ['http://localhost/', 'https://neontoon.mn/', 'https://www.neontoon.mn/'];
+  // if(!allowed.includes(req.headers.referer)) return res.status(403).send("Хандах эрхгүй!");
   const range = req.headers.range;
   if (!range) {
     res.status(400).send("Requires Range header");
@@ -34,17 +45,72 @@ app.get("/video/:type/:name/:size", function (req, res) {
     "Accept-Ranges": "bytes",
     "Content-Length": contentLength,
     "Content-Type": "video/mp4",
+    "Access-Control-Allow-Origin":"*"
   };
-
-  // HTTP Status 206 for Partial Content
   res.writeHead(206, headers);
-
-  // create video read stream for this particular chunk
   const videoStream = fs.createReadStream(videoPath, { start, end });
-
-  // Stream the video chunk to the client
   videoStream.pipe(res);
 });
+
+async function querySql(sql) {
+  connection.connect();
+  let result = []
+  connection.query(sql, function (error, results) {
+    if (error) {
+      console.log('onError58', error)  
+    } 
+    console.log('results', results)
+    result = results[0]
+  })
+  connection.end();
+  return result;
+}
+
+app.post("/message", async function (req, res) {
+  const { msg, token } = req.body
+  if(token !== "c9d8bba5244022fabf59d0aa7a5edf0dfbf51338") return res.send({ result: false })
+  var amount = msg.match(/(?<=ORLOGO:).*?(?=.00MNT)/i)
+  var userId = msg.match(/(?<=utga:)([0-9]+)/i)
+  if(!amount || !userId) return res.send({ result: false })
+  amount = amount[0].replaceAll(',', '')
+  amount = parseInt(amount)
+  userId = parseInt(userId[0])
+  const d = new Date()
+  let plan = []
+  try {
+    connection.connect();
+    connection.query(`SELECT * from plan where price=${amount}`, function (error, results) {
+      if (error) {
+        console.log('onError85', error)  
+      } 
+      console.log('results', results)
+      plan = results[0]
+      if(!plan) return false
+      console.log('plan', plan)
+      const today = Math.round(d.getTime() / 1000)
+      const till = Math.round(d.setMonth(d.getMonth() + plan.months) / 1000)
+      const plan_id = plan.plan_id
+      const user_id = userId
+      const paid_amount = amount
+      const payment_timestamp = today
+      const timestamp_from = today
+      const timestamp_to = till
+      const status = 1
+      var sql = `INSERT INTO subscription (plan_id, user_id, price_amount, paid_amount, payment_timestamp, timestamp_from, timestamp_to, status)`
+      sql += `VALUES (${plan_id}, ${user_id}, ${paid_amount}, ${paid_amount}, ${payment_timestamp}, ${timestamp_from}, ${timestamp_to}, ${status})`
+      connection.query(sql, function (error, results) {
+        if (error) {
+          console.log('onError102', error)  
+        } 
+      })
+    })
+    
+  } catch (error) {
+    console.log('error', error)
+  }
+
+  return res.send({ result: true, amount, userId })
+})
 
 app.listen(8000, function () {
   console.log("Listening on port 8000!");
