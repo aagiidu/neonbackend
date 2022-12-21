@@ -23,15 +23,7 @@ app.get("/video/:type/:name/:size", function (req, res) {
   const {type, name, size} = req.params;
   // const allowed = ['http://localhost/', 'https://neontoon.mn/', 'https://www.neontoon.mn/'];
   // if(!allowed.includes(req.headers.referer)) return res.status(403).send("Хандах эрхгүй!");
-
-  lastModified = stat.mtime.toUTCString();
-  response.setHeader('Last-Modified', lastModified);
-  // nginx style treat last-modified as a tag since browsers echo it back
-  if (request.headers['if-modified-since'] === lastModified && !request.headers.range) {
-    response.writeHead(304);
-    response.end();
-    return;
-  }
+  
   let range = req.headers.range;
   console.log('Range 1', range)
   if (!range) range = 'bytes=0-'
