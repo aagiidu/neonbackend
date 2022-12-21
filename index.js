@@ -24,6 +24,7 @@ app.get("/video/:type/:name/:size", function (req, res) {
   // const allowed = ['http://localhost/', 'https://neontoon.mn/', 'https://www.neontoon.mn/'];
   // if(!allowed.includes(req.headers.referer)) return res.status(403).send("Хандах эрхгүй!");
   const range = req.headers.range;
+  console.log('HEaders', req.headers)
   if (!range) {
     res.status(400).send("Requires Range header");
   }
