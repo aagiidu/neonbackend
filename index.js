@@ -23,22 +23,33 @@ app.get("/video/:type/:name/:size", function (req, res) {
   const {type, name, size} = req.params;
   // const allowed = ['http://localhost/', 'https://neontoon.mn/', 'https://www.neontoon.mn/'];
   // if(!allowed.includes(req.headers.referer)) return res.status(403).send("Хандах эрхгүй!");
+
+  lastModified = stat.mtime.toUTCString();
+  response.setHeader('Last-Modified', lastModified);
+  // nginx style treat last-modified as a tag since browsers echo it back
+  if (request.headers['if-modified-since'] === lastModified && !request.headers.range) {
+    response.writeHead(304);
+    response.end();
+    return;
+  }
   let range = req.headers.range;
-  //console.log('HEaders', req.headers)
+  console.log('Range 1', range)
   if (!range) range = 'bytes=0-'
 
+  console.log('Range 2', range)
   // get video stats (about 61MB)
   // Zamaa zasna!
   // PM2 suulgana!
   const videoPath = `../videos.neontoon.mn/movies/${type}/${name}_${size}.mp4`;
   const videoSize = fs.statSync(videoPath).size;
-  console.log('videoSize', videoSize);
+  // console.log('videoSize', videoSize);
   // Parse Range
   // Example: "bytes=32324-"
   const CHUNK_SIZE = 10 ** 6; // 1MB
   const start = Number(range.replace(/\D/g, ""));
   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
 
+  console.log('Start - End', start + '-' + end)
   // Create headers
   const contentLength = end - start + 1;
   const headers = {
