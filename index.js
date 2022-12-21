@@ -37,7 +37,7 @@ app.get("/video/:type/:name/:size", function (req, res) {
   console.log('videoSize', videoSize);
   // Parse Range
   // Example: "bytes=32324-"
-  const CHUNK_SIZE = 11 ** 6; // 1MB
+  const CHUNK_SIZE = 15 ** 6; // 1MB
   const start = Number(range.replace(/\D/g, ""));
   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
 
