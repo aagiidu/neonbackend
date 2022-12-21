@@ -25,8 +25,8 @@ app.get("/video/:type/:name/:size", function (req, res) {
   // if(!allowed.includes(req.headers.referer)) return res.status(403).send("Хандах эрхгүй!");
 
   let range = req.headers.range;
-  console.log('Range 1', req.headers)
-  if (!range) range = 'bytes=0-'
+  console.log('Range 1', req)
+  //if (!range) range = 'bytes=0-'
 
   console.log('Range 2', range)
   // get video stats (about 61MB)
