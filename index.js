@@ -29,7 +29,9 @@ app.get("/video/:type/:name/:size", function (req, res) {
   }
 
   // get video stats (about 61MB)
-  const videoPath = `../videos/${type}/${name}_${size}.mp4`;
+  // Zamaa zasna!
+  // PM2 suulgana!
+  const videoPath = `../videos.neontoon.mn/movies/${type}/${name}_${size}.mp4`;
   const videoSize = fs.statSync(videoPath).size;
   console.log('videoSize', videoSize);
   // Parse Range
