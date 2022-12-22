@@ -7,8 +7,8 @@ var mysql = require('mysql')
 
 var connection = mysql.createConnection({
   host: "localhost",
-  user: "vflixdbu",
-  password: "MxpPnCFFeNZT7fAH",
+  user: "root",
+  password: "1107@oghrMNDe",
   database: "vflix",
   multipleStatements: true
 });
@@ -31,7 +31,7 @@ app.get("/video/:type/:name/:size", function (req, res) {
   if (!range) range = 'bytes=0-'
 
   console.log('Range', range)
-  const videoPath = `../movies/${type}/${name}_${size}.mp4`;
+  const videoPath = `../videos/${type}/${name}_${size}.mp4`;
   const videoSize = fs.statSync(videoPath).size;
   console.log('videoSize', videoSize);
   // Parse Range
