@@ -61,7 +61,7 @@ app.post("/message", async function (req, res) {
   var amount = msg.match(/(?<=ORLOGO:).*?(?=.00MNT)/i)
   var userId = msg.match(/(?<=utga:)([0-9]+)/i)
   if(!amount || !userId) return res.send({ result: false })
-  amount = amount[0].replaceAll(',', '')
+  amount = amount[0].replace(/,/g, '')
   amount = parseInt(amount)
   userId = parseInt(userId[0])
   const d = new Date()
