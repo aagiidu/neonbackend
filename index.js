@@ -67,7 +67,6 @@ app.post("/message", async function (req, res) {
   const d = new Date()
   let plan = []
   try {
-    connection.connect();
     connection.query(`SELECT * from plan where price=${amount}`, function (error, results) {
       if (error) {
         console.log('onError85', error)  
@@ -87,19 +86,14 @@ app.post("/message", async function (req, res) {
       const status = 1
       var sql = `INSERT INTO subscription (plan_id, user_id, price_amount, paid_amount, payment_timestamp, timestamp_from, timestamp_to, status)`
       sql += `VALUES (${plan_id}, ${user_id}, ${paid_amount}, ${paid_amount}, ${payment_timestamp}, ${timestamp_from}, ${timestamp_to}, ${status})`
-      connection.connect();
       connection.query(sql, function (error, results) {
         if (error) {
           console.log('onError102', error)  
         } 
       })
-      connection.end();
-    })
-    connection.end();
-    
+    })    
   } catch (error) {
     console.log('error', error)
-    connection.end();
   }
 
   return res.send({ result: true, amount, userId })
