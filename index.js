@@ -91,11 +91,13 @@ app.post("/message", async function (req, res) {
         if (error) {
           console.log('onError102', error)  
         } 
+        connection.end();
       })
     })
     
   } catch (error) {
     console.log('error', error)
+    connection.end();
   }
 
   return res.send({ result: true, amount, userId })
