@@ -90,11 +90,10 @@ app.post("/message", async function (req, res) {
         if (error) {
           console.log('onError102', error)  
         } 
-        // insertId:
         if(results.insertId < 101){
           console.log('plan.months', plan.months)
           const promo = Math.round(d.setMonth(d.getMonth() + plan.months + 1) / 1000)
-          console.log('promo', promo)
+          console.log('promo', Math.round(d.setMonth(d.getMonth()) / 1000), Math.round(d.setMonth(d.getMonth() + plan.months) / 1000), promo)
           var updateSql = `UPDATE subscription set timestamp_to=${promo} WHERE subscription_id=${results.insertId}`;
           connection.query(updateSql, function (error2, results) {
             if (error2) {
