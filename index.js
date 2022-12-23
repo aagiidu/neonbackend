@@ -90,6 +90,7 @@ app.post("/message", async function (req, res) {
         if (error) {
           console.log('onError102', error)  
         } 
+        console.log('Subscription result', results) 
       })
     })    
   } catch (error) {
