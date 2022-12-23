@@ -91,7 +91,15 @@ app.post("/message", async function (req, res) {
           console.log('onError102', error)  
         } 
         // insertId:
-        console.log('Subscription result', results.insertId) 
+        if(results.insertId < 101){
+          const promo = Math.round(d.setMonth(d.getMonth() + plan.months + 1) / 1000)
+          var updateSql = `UPDATE subscription set timestamp_to=${promo} WHERE subscription_id=${results.insertId}`;
+          connection.query(updateSql, function (error2, results) {
+            if (error2) {
+              console.log('onUpdateError', error2)  
+            } 
+          })
+        }
       })
     })    
   } catch (error) {
