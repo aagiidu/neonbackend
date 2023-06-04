@@ -32,7 +32,8 @@ app.get("/video/:type/:name/:size", function (req, res) {
   if (!range) range = 'bytes=0-'
 
   console.log('Range', range)
-  const videoPath = `../videos/${type}/${name}_${size}.mp4`;
+  const videoPath = `../videos/${name}_${size}.mp4`;
+  // const videoPath = `../videos/${type}/${name}_${size}.mp4`;
   const videoSize = fs.statSync(videoPath).size;
   console.log('videoSize', videoSize);
   // Parse Range
