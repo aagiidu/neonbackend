@@ -3,7 +3,7 @@ const express = require("express");
 const fs = require("fs");
 const cors = require('cors')
 
-var mysql = require('mysql')
+/* var mysql = require('mysql')
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -11,14 +11,15 @@ var connection = mysql.createConnection({
   password: "1107@oghrMNDe",
   database: "vflix",
   multipleStatements: true
-});
+}); */
 
 const body_parser = require('body-parser');
 const app = express().use(body_parser.json());
 app.use(cors());
 
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/index.html");
+  return res.status(403).send("Хандах эрхгүй!");
+  // res.sendFile(__dirname + "/index.html");
 });  
 
 app.get("/video/:type/:name/:size", function (req, res) {
@@ -55,7 +56,7 @@ app.get("/video/:type/:name/:size", function (req, res) {
   videoStream.pipe(res);
 });
 
-app.post("/message", async function (req, res) {
+/* app.post("/message", async function (req, res) {
   const { msg, token } = req.body
   if(token !== "c9d8bba5244022fabf59d0aa7a5edf0dfbf51338") return res.send({ result: false })
   var amount = msg.match(/(?<=ORLOGO:).*?(?=.00MNT)/i)
@@ -109,7 +110,7 @@ app.post("/message", async function (req, res) {
   }
 
   return res.send({ result: true, amount, userId })
-})
+}) */
 
 app.listen(8000, function () {
   console.log("Listening on port 8000!");
