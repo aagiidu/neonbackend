@@ -21,8 +21,9 @@ app.get("/", function (req, res) {
   return res.status(403).send("Хандах эрхгүй!");
 });  
 
-app.get("/video/:name/:size/:token", function (req, res) {
-  const {name, size, token} = req.params;
+app.get("/video/:name/:size/:token/:expires", function (req, res) {
+  const {name, size, token, expires} = req.params;
+  return res.send({name, size, token, expires});
   // const allowed = ['http://localhost/', 'https://neontoon.mn/', 'https://www.neontoon.mn/'];
   // if(!allowed.includes(req.headers.referer)) return res.status(403).send("Хандах эрхгүй!");
 
