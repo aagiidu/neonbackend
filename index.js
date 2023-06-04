@@ -23,7 +23,7 @@ app.get("/", function (req, res) {
 
 app.get("/video/:name/:size/:token/:expires", function (req, res) {
   const {name, size, token, expires} = req.params;
-  return res.send({name, size, token, expires});
+  // return res.send({name, size, token, expires});
   // const allowed = ['http://localhost/', 'https://neontoon.mn/', 'https://www.neontoon.mn/'];
   // if(!allowed.includes(req.headers.referer)) return res.status(403).send("Хандах эрхгүй!");
 
@@ -31,7 +31,7 @@ app.get("/video/:name/:size/:token/:expires", function (req, res) {
   // console.log('Range 1', req.get('Range'))
   if (!range) range = 'bytes=0-'
 
-  console.log('Range', range)
+  // console.log('Range', range)
   const videoPath = `../videos/${name}_${size}.mp4`;
   // const videoPath = `../videos/${type}/${name}_${size}.mp4`;
   const videoSize = fs.statSync(videoPath).size;
