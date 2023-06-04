@@ -19,7 +19,6 @@ app.use(cors());
 
 app.get("/", function (req, res) {
   return res.status(403).send("Хандах эрхгүй!");
-  // res.sendFile(__dirname + "/index.html");
 });  
 
 app.get("/video/:type/:name/:size", function (req, res) {
